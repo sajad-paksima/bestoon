@@ -98,7 +98,7 @@ def register(request):
                 #                  text_body = "برای فعال کردن اکانت بستون خود روی لینک روبرو کلیک کنید: http://bestoon.ir/accounts/register/?email={}&code={}".format(email, code),
                 #                  tag = "account request")
                 # message.send()
-                context = {'message': 'ایمیلی حاوی لینک فعال سازی اکانت به شما فرستاده شده، لطفا پس از چک کردن ایمیل، روی لینک کلیک کنید.http://localhost:8000/accounts/register/?email={}&code={}'.format(email, code)}
+                context = {'message': 'ایمیلی حاوی لینک فعال سازی اکانت به شما فرستاده شده، لطفا پس از چک کردن ایمیل، روی لینک کلیک کنید.{}?email={}&code={}'.format(request.build_absolute_uri("/accounts/register"), email, code)}
                 return render(request, 'login.html', context)
         else:
             context = {'message': 'متاسفانه این نام کاربری قبلا استفاده شده است. از نام کاربری دیگری استفاده کنید. ببخشید که فرم ذخیره نشده. درست می شه'} #TODO: forgot password
