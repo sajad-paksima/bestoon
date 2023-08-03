@@ -121,3 +121,7 @@ def register(request):
     else:
         context = {'message': ''}
         return render(request, 'register.html', context)
+
+def index(request):
+    context = {}
+    return render(request, 'index.html', context)
