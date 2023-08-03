@@ -8,6 +8,7 @@ from web.models import Expense, Income, Token, User, Passwordresetcodes
 import datetime
 from django.contrib.auth.hashers import make_password
 from postmark import PMMail
+from django.db.models import Sum, Count
 import random
 import string
 import time
@@ -125,3 +126,18 @@ def register(request):
 def index(request):
     context = {}
     return render(request, 'index.html', context)
+
+@csrf_exempt
+def generalstat(request):
+    #TODO: should get (from-to), if not, use 1 month
+    #TODO: Is the token valid?
+    this_token = request.POST["token"]
+    this_user = User.objects.filter(token__token=this_token).get()
+    income = Income.objects.filter(user=this_user).aggregate(Count('amount'), Sum('amount'))
+    expense = Expense.objects.filter(user=this_user).aggregate(Count('amount'), Sum('amount'))
+
+    context = {}
+    context['income'] = income
+    context['expense'] = expense
+
+    return JsonResponse(context, encoder=json.JSONEncoder)
